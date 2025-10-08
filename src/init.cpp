@@ -19,6 +19,15 @@ static int throw_sdl_error(const char* fmt){
     return 3;
 }
 
+bool initAudio() {
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        return false;
+    }
+    Mix_AllocateChannels(MAX_SND_CHANNELS);
+    return true;
+}
+
 /**
  * @name initSDL
  * @brief Initializes SDL, creates window and renderer, sets up ImGui context, and initializes SDL_image
@@ -63,6 +72,11 @@ bool initSDL(Application &app, const std::string& title){
                     printf("SDL_image could not initialize, Error: %s", SDL_GetError());
 
                 }
+
+                if (!initAudio()) {
+                    printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+                    success = false;
+                }
             }
         }
     }
@@ -70,4 +84,18 @@ bool initSDL(Application &app, const std::string& title){
         SDL_ShowCursor(SDL_DISABLE);
     }
     return success;
+}
+
+/**
+ * Cleanup environment and app struct reference.
+ * Cleanup ImGui, SDL renderer, and SDL window.
+ * @param app - Application struct reference
+ */
+void cleanup(Application & app){
+    SDL_DestroyRenderer(app.renderer);
+    SDL_DestroyWindow(app.window);
+    app.window = nullptr;
+    app.renderer = nullptr;
+    SDL_Quit();
+    Mix_Quit();
 }

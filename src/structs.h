@@ -11,20 +11,31 @@ typedef struct AtlasImage AtlasImage;
 typedef struct Pipe Pipe;
 typedef struct Flappy Flappy;
 typedef struct Application Application;
+typedef struct Animation Animation;
+
+// struct Animation{
+//     std::string name;
+//     float angle;
+//     float frameTime = 1.0f / 24.0f;
+
+// };
+
 
 struct Flappy{
     float x;
     float y;
     float dx;
     float dy;
-    AtlasImage * texture;
-    int health;
+    AtlasImage * idleTexture;
+    std::vector<AtlasImage *>  jumpTextures;
+    int health = 1.0f;
     bool active = true;
-    float animTimer;
+    //Animation * jumpAnimation;
     int currentFrame;
+    float frameTime = 1.0f /24.0f;
+    float animTimer = 0.0f;
+    float jumpAngle;
     bool isJumping;
-    bool jumpKeyPressedLastFrame;
-    float rotation;  // Current rotation angle in degrees
 };
 
 struct AtlasImage
@@ -54,6 +65,8 @@ struct Application {
     int screenHeight;
     double deltaTime;
     std::unordered_map<std::string, AtlasImage*> atlas;
+    std::unordered_map<std::string, SDL_Texture*> textureCache;
+
 
 };
 #endif //FLAPPY_BIRD_SDL2_STRUCTS_H

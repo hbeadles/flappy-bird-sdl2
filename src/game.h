@@ -1,0 +1,52 @@
+//
+// Created by Hayden Beadles on 10/5/25.
+//
+
+#ifndef FLAPPY_BIRD_SDL2_GAME_H
+#define FLAPPY_BIRD_SDL2_GAME_H
+#include <common.h>
+
+// Forward declaration to avoid circular dependency
+class Stage;
+/**
+ * @class Game
+ * @name Game
+ * @brief High level Game class, handles main loop, input processing, game updates, and rendering.
+ * Contains ui configs.
+ */
+class Game{
+
+public:
+    Game();
+    explicit Game(Application & app);
+    ~Game(); // Declare destructor in header
+    bool initialize(const std::string& title);
+    void runloop();
+    void shutdown();
+    Application app{};
+    void processInput();
+    void updateGame();
+    void generateOutput();
+    void initFlappy();
+    void handleFlappy(const Uint8* state);
+    void updateFlappy(float deltaTime);
+    void renderFlappy();
+    bool mIsRunning;
+    double score;
+    void transitionToStage(StageType stageType);
+private:
+    std::unique_ptr<Flappy> flappy=nullptr;
+    std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
+    Stage* currentStage = nullptr;
+    SDL_Window* mWindow{};
+    SDL_Renderer* mRenderer{};
+    Uint32 mTicksCount;
+    enum FlappyState {
+        JUMP,
+        FALL
+    };
+    FlappyState currentState = FALL;
+};
+
+
+#endif //FLAPPY_BIRD_SDL2_GAME_H

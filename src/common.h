@@ -13,6 +13,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <vector>
+#include <fstream>
 #include <structs.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

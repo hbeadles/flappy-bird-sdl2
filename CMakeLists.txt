@@ -55,7 +55,22 @@ FetchContent_Declare(
         FIND_PACKAGE_ARGS
 )
 
-FetchContent_MakeAvailable(SDL2 SDL2_mixer SDL2_image SDL2_ttf)
+FetchContent_Declare(
+        entt
+        GIT_REPOSITORY https://github.com/skypjack/entt.git
+        GIT_TAG v3.13.2
+)
+
+set(BOOST_INCLUDE_LIBRARIES json)
+set(BOOST_ENABLE_CMAKE ON)
+
+FetchContent_Declare(
+        Boost
+        URL https://github.com/boostorg/boost/releases/download/boost-1.87.0/boost-1.87.0-cmake.tar.xz
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+
+FetchContent_MakeAvailable(SDL2 SDL2_mixer SDL2_image SDL2_ttf Boost entt)
 
 target_include_directories (
         ${CMAKE_PROJECT_NAME}
@@ -75,4 +90,19 @@ target_link_libraries(
         SDL2_mixer::SDL2_mixer
         SDL2_image::SDL2_image
         SDL2_ttf::SDL2_ttf
+        EnTT::EnTT
+        Boost::json
+)
+
+file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR} )
+file(COPY ${PROJECT_SOURCE_DIR}/gfx DESTINATION ${CMAKE_BINARY_DIR} )
+file(COPY ${PROJECT_SOURCE_DIR}/audio DESTINATION ${CMAKE_BINARY_DIR} )
+
+target_compile_definitions(
+        ${CMAKE_PROJECT_NAME}
+        PRIVATE
+        ATLAS_FILE_PATH="${CMAKE_BINARY_DIR}/data/atlas.json"
+        DATA_DIR="${CMAKE_BINARY_DIR}/data"
+        GFX_DIR="${CMAKE_BINARY_DIR}/gfx"
+        AUDIO_DIR="${CMAKE_BINARY_DIR}/audio"
 )

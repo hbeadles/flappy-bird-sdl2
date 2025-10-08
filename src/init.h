@@ -14,6 +14,7 @@
 
 
 bool initSDL(Application &app, const std::string& title);
+bool initAudio();
 void cleanup(Application &app);
 
 
