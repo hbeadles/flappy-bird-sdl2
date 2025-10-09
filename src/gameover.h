@@ -1,30 +1,34 @@
 //
-// Created by Hayden Beadles on 10/5/25.
+// Created by Hayden Beadles on 10/8/25.
 //
 
-#ifndef FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
-#define FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
+#ifndef FLAPPY_BIRD_SDL2_GAMEOVER_H
+#define FLAPPY_BIRD_SDL2_GAMEOVER_H
 #include <stage.h>
 #include <common.h>
 
-class FlappyBirdStage : public Stage {
+class GameOverStage : public Stage {
 public:
-    FlappyBirdStage(Game *game);
-    virtual ~FlappyBirdStage() = default;
+    GameOverStage(Game *game);
+    virtual ~GameOverStage() = default;
     virtual void init() override;
     virtual void handleInput(const Uint8* state) override;
     virtual StageType update(float deltaTime) override;
     virtual void reset() override;
+
     virtual void draw() override;
 private:
+    bool restart=false;
     void drawBackground();
+    void drawGameOver();
     void drawBase();
     SDL_Texture* background;
     SDL_Texture* base;
+    SDL_Texture* gameOverTexture;
+    int gameOverTextureWidth;
+    int gameOverTextureHeight;
     double backgroundX;
+    double backgroundY;
     double baseX;
-    int gameOverTimer = FPS * 3;
 };
-
-
-#endif //FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
+#endif //FLAPPY_BIRD_SDL2_GAMEOVER_H

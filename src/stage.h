@@ -17,6 +17,7 @@ public:
     virtual void handleInput(const Uint8* state);
     virtual StageType update(float deltaTime);
     virtual void reset();
+    bool hasPipeManager();
 
     virtual void draw();
     StageType getType() const;

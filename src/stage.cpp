@@ -11,6 +11,9 @@ Stage::Stage(Game *game, StageType type) : game(game), type(type) {
 void Stage::init() {
     // Default implementation - can be overridden by derived classes
 }
+bool Stage::hasPipeManager() {
+    return game->pipe_manager != nullptr;
+}
 
 void Stage::handleInput(const Uint8* state) {
     // Default implementation - can be overridden by derived classes

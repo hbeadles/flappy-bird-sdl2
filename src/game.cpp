@@ -8,6 +8,7 @@
 #include <draw.h>
 #include <atlas.h>
 #include <utils.h>
+#include <gameover.h>
 
 Game::Game(Application &app): app(app), pipe_manager(nullptr) {
     std::srand(std::time(nullptr));  // Initialize random seed
@@ -27,6 +28,7 @@ bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
     initAtlas(app);
     stages[StageType::GAMEPLAY] = std::make_unique<FlappyBirdStage>(this);
+    stages[StageType::GAME_OVER] = std::make_unique<GameOverStage>(this);
     for (auto& [type, stage] : stages) {
         stage->init();
     }
@@ -158,9 +160,21 @@ void Game::updateFlappy(float deltaTime) {
 
 void Game::renderFlappy() {
     if (flappy->isJumping) {
-        blitAtlasImage(app, flappy->jumpTextures[flappy->currentFrame], flappy->x, flappy->y, 0, flappy->jumpAngle, SDL_FLIP_NONE);
+        blitAtlasImage(app,
+            flappy->jumpTextures[flappy->currentFrame],
+            flappy->x,
+            flappy->y,
+            0,
+            flappy->jumpAngle,
+            SDL_FLIP_NONE);
     }else {
-        blitAtlasImage(app, flappy->idleTexture, flappy->x, flappy->y, 0, flappy->jumpAngle, SDL_FLIP_NONE);
+        blitAtlasImage(app,
+            flappy->idleTexture,
+            flappy->x,
+            flappy->y,
+            0,
+            flappy->jumpAngle,
+            SDL_FLIP_NONE);
     }
 }
 
@@ -175,6 +189,10 @@ void Game::transitionToStage(StageType stageType) {
         currentStage->reset();
         currentStage->init();
         initFlappy();
+    }
+    if (stageType == StageType::GAME_OVER) {
+        currentStage->reset();
+        currentStage->init();
     }
 }
 

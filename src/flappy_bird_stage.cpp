@@ -11,9 +11,6 @@ FlappyBirdStage::FlappyBirdStage(Game *game)
     : Stage(game, StageType::GAMEPLAY), background(nullptr), base(nullptr), backgroundX(0), baseX(0) {
 };
 
-bool FlappyBirdStage::hasPipeManager() {
-    return game->pipe_manager != nullptr;
-}
 
 void FlappyBirdStage::init() {
     background = loadTexture(game->app, "gfx/background-day.png");
@@ -51,7 +48,7 @@ StageType FlappyBirdStage::update(float deltaTime) {
         if (gameOverTimer <= 0) {
             printf("Game over. Restarting...\n");
             gameOverTimer = FPS * 3;
-            return StageType::GAMEOVER;
+            return StageType::GAME_OVER;
         }
     }
 
