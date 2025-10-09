@@ -1,0 +1,90 @@
+[
+    {
+        "filename": "gfx/yellowbird-01.png",
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/yellowbird-02.png",
+        "x": 34,
+        "y": 0,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/yellowbird-03.png",
+        "x": 68,
+        "y": 0,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/redbird-01.png",
+        "x": 0,
+        "y": 24,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/redbird-02.png",
+        "x": 34,
+        "y": 24,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/redbird-03.png",
+        "x": 68,
+        "y": 24,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/bluebird-01.png",
+        "x": 0,
+        "y": 48,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/bluebird-02.png",
+        "x": 34,
+        "y": 48,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/bluebird-03.png",
+        "x": 68,
+        "y": 48,
+        "w": 34,
+        "h": 24,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/pipe-green.png",
+        "x": 0,
+        "y": 72,
+        "w": 52,
+        "h": 320,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/pipe-red.png",
+        "x": 52,
+        "y": 72,
+        "w": 52,
+        "h": 320,
+        "rotated": 0
+    }
+]

@@ -1,0 +1,82 @@
+[
+    {
+        "filename": "gfx/number-0.png",
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-1.png",
+        "x": 24,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-2.png",
+        "x": 48,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-3.png",
+        "x": 72,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-4.png",
+        "x": 96,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-5.png",
+        "x": 120,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-6.png",
+        "x": 144,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-7.png",
+        "x": 168,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-8.png",
+        "x": 192,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    },
+    {
+        "filename": "gfx/number-9.png",
+        "x": 216,
+        "y": 0,
+        "w": 24,
+        "h": 36,
+        "rotated": 0
+    }
+]
