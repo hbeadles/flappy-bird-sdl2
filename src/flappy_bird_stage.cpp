@@ -6,26 +6,35 @@
 #include <textures.h>
 #include <draw.h>
 
+
 FlappyBirdStage::FlappyBirdStage(Game *game)
     : Stage(game, StageType::GAMEPLAY), background(nullptr), base(nullptr), backgroundX(0), baseX(0) {
 };
 
+bool FlappyBirdStage::hasPipeManager() {
+    return game->pipe_manager != nullptr;
+}
 
 void FlappyBirdStage::init() {
     background = loadTexture(game->app, "gfx/background-day.png");
     base = loadTexture(game->app, "gfx/base.png");
-    reset();
+    if (hasPipeManager()) {
+        game->pipe_manager->initPipes();
+    }
 };
 
 void FlappyBirdStage::reset() {
     backgroundX = 0;
     baseX = 0;
     game->score = 0;
-
+    if (hasPipeManager()){
+        game->pipe_manager->clearPipes();
+    }
 };
 
 StageType FlappyBirdStage::update(float deltaTime) {
     backgroundX -= deltaTime * 50;
+
     if (backgroundX <= -SCREEN_WIDTH) {
         backgroundX = 0;
     }
@@ -34,12 +43,29 @@ StageType FlappyBirdStage::update(float deltaTime) {
         baseX = 0;
     }
 
+    if (hasPipeManager()) {
+        game->pipe_manager->updatePipes(game->flappy.get(), deltaTime);
+    }
+    if (game->flappy && game->flappy->active == false) {
+        gameOverTimer--;
+        if (gameOverTimer <= 0) {
+            printf("Game over. Restarting...\n");
+            gameOverTimer = FPS * 3;
+            return StageType::GAMEOVER;
+        }
+    }
+
     return StageType::NONE;
 }
 
 void FlappyBirdStage::draw() {
+
     drawBackground();
+    if (hasPipeManager()) {
+        game->pipe_manager->drawPipes();
+    }
     drawBase();
+
 }
 
 void FlappyBirdStage::drawBackground() {

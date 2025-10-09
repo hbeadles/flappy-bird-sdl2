@@ -15,6 +15,7 @@ public:
     virtual void handleInput(const Uint8* state) override;
     virtual StageType update(float deltaTime) override;
     virtual void reset() override;
+    bool hasPipeManager();
 
     virtual void draw() override;
 private:

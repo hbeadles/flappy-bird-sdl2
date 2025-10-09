@@ -7,17 +7,17 @@
 #include <flappy_bird_stage.h>
 #include <draw.h>
 #include <atlas.h>
-#include <atlas.h>
+#include <utils.h>
 
-Game::Game(Application &app){
+Game::Game(Application &app): app(app), pipe_manager(nullptr) {
     std::srand(std::time(nullptr));  // Initialize random seed
     app.screenHeight = SCREEN_HEIGHT;
     app.screenWidth = SCREEN_WIDTH;
-    this->app = app;
     this->mIsRunning = true;
     this->mTicksCount = 0;
     this->score = 0;
-};
+    pipe_manager = std::make_unique<PipeManager>(this);
+}
 
 Game::~Game() {
 
@@ -25,12 +25,11 @@ Game::~Game() {
 
 bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
+    initAtlas(app);
     stages[StageType::GAMEPLAY] = std::make_unique<FlappyBirdStage>(this);
     for (auto& [type, stage] : stages) {
         stage->init();
     }
-    initAtlas(app);
-    initFlappy();
     transitionToStage(StageType::GAMEPLAY);
 
     return init;
@@ -60,7 +59,7 @@ void Game::initFlappy() {
 }
 
 void Game::handleFlappy(const Uint8 *state) {
-    if (state[SDL_SCANCODE_SPACE]) {
+    if (state[SDL_SCANCODE_SPACE] && flappy->active) {
         currentState = JUMP;
     }else {
         currentState = FALL;
@@ -68,17 +67,16 @@ void Game::handleFlappy(const Uint8 *state) {
 }
 
 void Game::updateFlappy(float deltaTime) {
-    if (!flappy->active) {
-        return;
-    }
+
     flappy->y += flappy->dy * deltaTime;
     flappy->x += flappy->dx * deltaTime;
+    flappy->dy += GRAVITY * 30.0f;
 
     float targetRotation = flappy->dy * FLAPPY_ROTATION_SPEED * deltaTime;
     targetRotation = std::clamp(targetRotation, -35.0f, FLAPPY_MAX_ROTATION);
     flappy->jumpAngle = targetRotation;
 
-    if (currentState == JUMP) {
+    if (currentState == JUMP && flappy->active) {
         flappy->dy = -125.0f;
         flappy->jumpAngle = -35.0f;
         if (!flappy->isJumping) {
@@ -86,8 +84,41 @@ void Game::updateFlappy(float deltaTime) {
             flappy->animTimer = 0.0f;
             flappy->currentFrame = 0;
         }
-    }else {
-        flappy->dy += GRAVITY * 30.0f;
+    }
+    if (flappy->active) {
+        for (Pipe& pipe : pipe_manager->pipePool){
+            if (pipe.active && collision(flappy.get(), &pipe)){
+                CollisionSide side = getCollisionSide(flappy.get(), &pipe);
+                if (flappy->active) {
+                    //playSound("hit");
+                }
+                switch(side) {
+                    case SIDE_TOP:
+                        // Bird hit top of pipe - bounce up
+                        flappy->dy = -abs(flappy->dy);
+                        flappy->y = pipe.y - flappy->idleTexture->rect.h - 1;
+
+                        break;
+                    case SIDE_BOTTOM:
+                        // Bird hit bottom of pipe - bounce down
+                        flappy->dy = abs(flappy->dy);
+                        flappy->y = pipe.y + pipe.texture->rect.h + 1;
+                        break;
+                    case SIDE_LEFT:
+                        // Bird hit left side of pipe - bounce left
+                        flappy->dx = -abs(flappy->dx);
+                        flappy->x = pipe.x - flappy->idleTexture->rect.w - 1;
+                        break;
+                    case SIDE_RIGHT:
+                        // Bird hit right side of pipe - bounce right
+                        flappy->dx = abs(flappy->dx);
+                        flappy->x = pipe.x + pipe.texture->rect.w + 1;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     if (flappy->y < 0.0f) {
@@ -141,9 +172,10 @@ void Game::transitionToStage(StageType stageType) {
     }
     currentStage = stages[stageType].get();
     if (stageType == StageType::GAMEPLAY){
+        currentStage->reset();
+        currentStage->init();
         initFlappy();
     }
-    currentStage->reset();
 }
 
 void Game::runloop(){

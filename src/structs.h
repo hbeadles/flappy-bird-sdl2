@@ -45,10 +45,10 @@ struct AtlasImage
     int rotated;
 };
 struct Pipe {
-    float x;
-    float y;
-    bool isTop;
+    float x{};
+    float y{};
     AtlasImage * texture;
+    bool isTop{};
     bool active = false;
     bool passed = false;
 };

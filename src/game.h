@@ -6,6 +6,8 @@
 #define FLAPPY_BIRD_SDL2_GAME_H
 #include <common.h>
 
+#include <pipemanager.h>
+
 // Forward declaration to avoid circular dependency
 class Stage;
 /**
@@ -28,14 +30,17 @@ public:
     void updateGame();
     void generateOutput();
     void initFlappy();
+
     void handleFlappy(const Uint8* state);
     void updateFlappy(float deltaTime);
     void renderFlappy();
     bool mIsRunning;
     double score;
     void transitionToStage(StageType stageType);
-private:
+    std::unique_ptr<PipeManager> pipe_manager;
     std::unique_ptr<Flappy> flappy=nullptr;
+
+private:
     std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
     Stage* currentStage = nullptr;
     SDL_Window* mWindow{};

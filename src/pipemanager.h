@@ -6,15 +6,18 @@
 #define FLAPPY_BIRD_SDL2_PIPE_H
 #include <common.h>
 
+class Game;
+
 class PipeManager {
 public:
-    PipeManager() = default;
+    PipeManager(Game* game);
     void initPipes(void);
-    void handlePipes(float deltaTime);
+    void updatePipes(Flappy * flappy, float deltaTime);
     void drawPipes(void);
     void clearPipes(void);
     std::vector<Pipe> pipePool;
 private:
+    Game* game;
     void generatePipePair(float &topY, float &bottomY, float &gap, float gapMin, float gapMax, float gapFraction = 0.5f);
     bool containsInactivePipe(bool isTop);
     float randomFloat(float min, float max);
