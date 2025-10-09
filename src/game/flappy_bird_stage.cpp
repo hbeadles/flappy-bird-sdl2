@@ -1,10 +1,10 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-#include <flappy_bird_stage.h>
-#include <game.h>
-#include <textures.h>
-#include <draw.h>
+#include <game/flappy_bird_stage.h>
+#include <game/game.h>
+#include <draw/textures.h>
+#include <draw/draw.h>
 
 
 FlappyBirdStage::FlappyBirdStage(Game *game)

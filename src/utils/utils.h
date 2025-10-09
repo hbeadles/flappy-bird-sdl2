@@ -4,7 +4,7 @@
 
 #ifndef FLAPPY_BIRD_SDL2_UTILS_H
 #define FLAPPY_BIRD_SDL2_UTILS_H
-#include <common.h>
+#include <system/common.h>
 
 CollisionSide getCollisionSide(Flappy *a, Pipe *b);
 bool checkCollisionRect(const SDL_Rect& a, const SDL_Rect& b);

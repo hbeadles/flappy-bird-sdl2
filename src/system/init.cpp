@@ -1,7 +1,7 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-#include <init.h>
+#include <system/init.h>
 
 static int throw_sdl_error(const char* fmt);
 

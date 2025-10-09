@@ -2,8 +2,8 @@
 // Created by Hayden Beadles on 10/5/25.
 //
 
-#include <stage.h>
-#include <game.h>
+#include <game/stage.h>
+#include <game/game.h>
 
 Stage::Stage(Game *game, StageType type) : game(game), type(type) {
 }

@@ -1,10 +1,10 @@
 //
 // Created by Hayden Beadles on 10/8/25.
 //
-#include <pipemanager.h>
-#include <atlas.h>
-#include <game.h>
-#include <draw.h>
+#include <game/pipemanager.h>
+#include <system/atlas.h>
+#include <game/game.h>
+#include <draw/draw.h>
 
 PipeManager::PipeManager(Game* game): game(game) {
 

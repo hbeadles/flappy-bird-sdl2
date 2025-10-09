@@ -1,7 +1,7 @@
 //
 // Created by Hayden Beadles on 10/8/25.
 //
-#include <utils.h>
+#include <utils/utils.h>
 
 bool collision(Flappy *a, Pipe *b){
     SDL_Rect aRect = {(int)a->x, (int)a->y, a->idleTexture->rect.w, a->idleTexture->rect.h};

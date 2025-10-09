@@ -1,14 +1,14 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-#include <game.h>
-#include <stage.h>
-#include <init.h>
-#include <flappy_bird_stage.h>
-#include <draw.h>
-#include <atlas.h>
-#include <utils.h>
-#include <gameover.h>
+#include <game/game.h>
+#include <game/stage.h>
+#include <system/init.h>
+#include <game/flappy_bird_stage.h>
+#include <draw/draw.h>
+#include <system/atlas.h>
+#include <utils/utils.h>
+#include <game/gameover.h>
 
 Game::Game(Application &app): app(app), pipe_manager(nullptr) {
     std::srand(std::time(nullptr));  // Initialize random seed

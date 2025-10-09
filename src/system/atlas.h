@@ -1,7 +1,7 @@
 #ifndef FLAPPY_BIRD_SDL2_ATLAS_H
 #define FLAPPY_BIRD_SDL2_ATLAS_H
-#include <common.h>
-#include <textures.h>
+#include <system/common.h>
+#include <draw/textures.h>
 #ifndef ATLAS_FILE_PATH
 #define ATLAS_FILE_PATH "data/atlas.json"
 #endif

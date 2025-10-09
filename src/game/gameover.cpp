@@ -1,20 +1,20 @@
 //
 // Created by Hayden Beadles on 10/8/25.
 //
-#include <gameover.h>
-#include <game.h>
-#include <textures.h>
-#include <draw.h>
+#include <game/gameover.h>
+#include <game/game.h>
+#include <draw/textures.h>
+#include <draw/draw.h>
 
 GameOverStage::GameOverStage(Game *game) : Stage(game, StageType::GAME_OVER),
-    background(nullptr),
-    base(nullptr),
-    gameOverTexture(nullptr),
-    backgroundX(0),
-    backgroundY(0),
-    baseX(0),
-    gameOverTextureWidth(0),
-    gameOverTextureHeight(0)
+                                           background(nullptr),
+                                           base(nullptr),
+                                           gameOverTexture(nullptr),
+                                           backgroundX(0),
+                                           backgroundY(0),
+                                           baseX(0),
+                                           gameOverTextureWidth(0),
+                                           gameOverTextureHeight(0)
 {
 }
 

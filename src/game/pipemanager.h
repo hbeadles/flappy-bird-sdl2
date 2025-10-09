@@ -4,7 +4,7 @@
 
 #ifndef FLAPPY_BIRD_SDL2_PIPE_H
 #define FLAPPY_BIRD_SDL2_PIPE_H
-#include <common.h>
+#include <system/common.h>
 
 class Game;
 

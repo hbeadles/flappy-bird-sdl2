@@ -4,7 +4,7 @@
 
 #ifndef FLAPPY_BIRD_SDL2_STAGE_H
 #define FLAPPY_BIRD_SDL2_STAGE_H
-#include <common.h>
+#include <system/common.h>
 
 // Forward declaration to avoid circular dependency
 class Game;

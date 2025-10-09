@@ -4,8 +4,8 @@
 
 #ifndef FLAPPY_BIRD_SDL2_GAMEOVER_H
 #define FLAPPY_BIRD_SDL2_GAMEOVER_H
-#include <stage.h>
-#include <common.h>
+#include <game/stage.h>
+#include <system/common.h>
 
 class GameOverStage : public Stage {
 public:

@@ -1,6 +1,6 @@
 #ifndef FLAPPY_BIRD_SDL2_DRAW_H
 #define FLAPPY_BIRD_SDL2_DRAW_H
-#include <common.h>
+#include <system/common.h>
 
 void prepareScene(Application & app);
 void presentScene(Application & app);

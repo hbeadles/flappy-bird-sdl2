@@ -1,8 +1,8 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-#include <common.h>
-#include <game.h>
+#include <system/common.h>
+#include <game/game.h>
 
 Application* g_app = nullptr;
 Game* g_game = nullptr;

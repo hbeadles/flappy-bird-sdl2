@@ -7,14 +7,14 @@
 #include "SDL2/SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
-#include <defs.h>
+#include <system/defs.h>
 #include <string>
 #include <cstdio>
 #include <cmath>
 #include <unordered_map>
 #include <vector>
 #include <fstream>
-#include <structs.h>
+#include <system/structs.h>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #include <emscripten/html5.h>

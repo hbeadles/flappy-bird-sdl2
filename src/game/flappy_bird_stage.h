@@ -4,8 +4,8 @@
 
 #ifndef FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
 #define FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
-#include <stage.h>
-#include <common.h>
+#include <game/stage.h>
+#include <system/common.h>
 
 class FlappyBirdStage : public Stage {
 public:

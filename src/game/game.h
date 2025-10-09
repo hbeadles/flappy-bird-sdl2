@@ -4,9 +4,9 @@
 
 #ifndef FLAPPY_BIRD_SDL2_GAME_H
 #define FLAPPY_BIRD_SDL2_GAME_H
-#include <common.h>
+#include <system/common.h>
 
-#include <pipemanager.h>
+#include <game/pipemanager.h>
 
 // Forward declaration to avoid circular dependency
 class Stage;
