@@ -7,6 +7,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         src/*.cpp
+        src/system/*.cpp
+        src/system/*.h
+        src/draw/*.h
+        src/draw/*.cpp
+        src/game/*.h
+        src/game/*.cpp
+        src/utils/*.h
+        src/utils/*.cpp
         src/tests/*.cpp
         src/tests/*.h
         src/*.hpp
@@ -22,6 +30,10 @@ target_include_directories(
         PRIVATE
         ${PROJECT_SOURCE_DIR}/includes
         ${PROJECT_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/src/system
+        ${PROJECT_SOURCE_DIR}/src/draw
+        ${PROJECT_SOURCE_DIR}/src/game
+        ${PROJECT_SOURCE_DIR}/src/utils
         ${PROJECT_SOURCE_DIR}/src/tests
 )
 
@@ -77,6 +89,10 @@ target_include_directories (
         PRIVATE
         ${PROJECT_SOURCE_DIR}/includes
         ${PROJECT_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/src/system
+        ${PROJECT_SOURCE_DIR}/src/draw
+        ${PROJECT_SOURCE_DIR}/src/game
+        ${PROJECT_SOURCE_DIR}/src/utils
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_MIXER_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
