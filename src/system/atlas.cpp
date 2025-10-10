@@ -11,6 +11,8 @@ void initAtlas(Application & app) {
     texture = loadTexture(app, ATLAS_PNG_PATH);
     textTexture = loadTexture(app, TEXT_PNG_PATH);
     loadAtlasData(app);
+    loadAtlasData(app, TEXT_FILE_PATH, textTexture);
+
 
 }
 

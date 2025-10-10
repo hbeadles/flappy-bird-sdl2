@@ -85,7 +85,7 @@ void PipeManager::updatePipes(Flappy* flappy, float deltaTime) {
             if (!pipe.isTop && !pipe.passed && flappy->active){
                 if (flappy->x > pipe.x + pipeTexture->rect.w){
                     pipe.passed = true;
-                    //game->score++;
+                    game->score++;
                 }
             }
             pipe.x -= (PIPE_SCROLL_SPEED * deltaTime * 60);

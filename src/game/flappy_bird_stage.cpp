@@ -8,7 +8,12 @@
 
 
 FlappyBirdStage::FlappyBirdStage(Game *game)
-    : Stage(game, StageType::GAMEPLAY), background(nullptr), base(nullptr), backgroundX(0), baseX(0) {
+    : Stage(game, StageType::GAMEPLAY),
+      textWriter(game),
+      background(nullptr),
+      base(nullptr),
+      backgroundX(0),
+      baseX(0) {
 };
 
 
@@ -18,6 +23,7 @@ void FlappyBirdStage::init() {
     if (hasPipeManager()) {
         game->pipe_manager->initPipes();
     }
+    textWriter.initText();
 };
 
 void FlappyBirdStage::reset() {
@@ -62,6 +68,7 @@ void FlappyBirdStage::draw() {
         game->pipe_manager->drawPipes();
     }
     drawBase();
+    textWriter.drawScore(game->score, (SCREEN_WIDTH / 2) - 24, 50);
 
 }
 

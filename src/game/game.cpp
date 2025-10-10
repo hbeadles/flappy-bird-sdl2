@@ -190,6 +190,7 @@ void Game::transitionToStage(StageType stageType) {
     if (stageType == StageType::GAME_INTRO) {
         currentStage->reset();
         currentStage->init();
+        flappy = nullptr;
     }
     if (stageType == StageType::GAMEPLAY){
         currentStage->reset();
