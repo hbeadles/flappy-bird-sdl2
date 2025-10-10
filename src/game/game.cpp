@@ -9,6 +9,7 @@
 #include <system/atlas.h>
 #include <utils/utils.h>
 #include <game/gameover.h>
+#include <game/gameintro.h>
 
 Game::Game(Application &app): app(app), pipe_manager(nullptr) {
     std::srand(std::time(nullptr));  // Initialize random seed
@@ -27,12 +28,13 @@ Game::~Game() {
 bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
     initAtlas(app);
+    stages[StageType::GAME_INTRO] = std::make_unique<GameIntroStage>(this);
     stages[StageType::GAMEPLAY] = std::make_unique<FlappyBirdStage>(this);
     stages[StageType::GAME_OVER] = std::make_unique<GameOverStage>(this);
     for (auto& [type, stage] : stages) {
         stage->init();
     }
-    transitionToStage(StageType::GAMEPLAY);
+    transitionToStage(StageType::GAME_INTRO);
 
     return init;
 };
@@ -185,6 +187,10 @@ void Game::transitionToStage(StageType stageType) {
         //currentStage->cleanup();
     }
     currentStage = stages[stageType].get();
+    if (stageType == StageType::GAME_INTRO) {
+        currentStage->reset();
+        currentStage->init();
+    }
     if (stageType == StageType::GAMEPLAY){
         currentStage->reset();
         currentStage->init();
@@ -241,7 +247,12 @@ void Game::processInput() {
     if (currentStage) {
         currentStage->handleInput(state);
     }
-    handleFlappy(state);
+    if (flappy != nullptr) {
+        handleFlappy(state);
+    }
+
+    spaceWasPressed = state[SDL_SCANCODE_SPACE];
+    returnWasPressed = state[SDL_SCANCODE_RETURN];
 };
 
 void Game::updateGame() {
@@ -251,7 +262,6 @@ void Game::updateGame() {
     if (deltaTime > 0.05f){
         deltaTime = 0.05f;
     }
-    bool windowPointer = true;
     mTicksCount = SDL_GetTicks();
 
     if (currentStage) {
@@ -260,7 +270,9 @@ void Game::updateGame() {
             transitionToStage(nextStage);
         }
     }
-    updateFlappy(deltaTime);
+    if (flappy != nullptr) {
+        updateFlappy(deltaTime);
+    }
 };
 
 void Game::generateOutput(){
@@ -268,7 +280,9 @@ void Game::generateOutput(){
     if (currentStage) {
         currentStage->draw();
     }
-    renderFlappy();
+    if (flappy != nullptr) {
+        renderFlappy();
+    }
     presentScene(app);
 }
 

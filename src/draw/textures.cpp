@@ -1,7 +1,7 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-#include <textures.h>
+#include <draw/textures.h>
 
 SDL_Texture* loadTexture(Application & app, const std::string & filename){
     SDL_Texture* texture = getTexture(app, filename);

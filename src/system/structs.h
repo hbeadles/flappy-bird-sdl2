@@ -13,12 +13,6 @@ typedef struct Flappy Flappy;
 typedef struct Application Application;
 typedef struct Animation Animation;
 
-// struct Animation{
-//     std::string name;
-//     float angle;
-//     float frameTime = 1.0f / 24.0f;
-
-// };
 
 
 struct Flappy{

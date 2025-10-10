@@ -14,12 +14,10 @@ class Stage;
  * @class Game
  * @name Game
  * @brief High level Game class, handles main loop, input processing, game updates, and rendering.
- * Contains ui configs.
  */
 class Game{
 
 public:
-    Game();
     explicit Game(Application & app);
     ~Game(); // Declare destructor in header
     bool initialize(const std::string& title);
@@ -39,8 +37,10 @@ public:
     void transitionToStage(StageType stageType);
     std::unique_ptr<PipeManager> pipe_manager;
     std::unique_ptr<Flappy> flappy=nullptr;
-
+    bool spaceWasPressed = false;
+    bool returnWasPressed = false;
 private:
+
     std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
     Stage* currentStage = nullptr;
     SDL_Window* mWindow{};

@@ -10,11 +10,11 @@ class Game;
 
 class PipeManager {
 public:
-    PipeManager(Game* game);
-    void initPipes(void);
+    explicit PipeManager(Game* game);
+    void initPipes();
     void updatePipes(Flappy * flappy, float deltaTime);
-    void drawPipes(void);
-    void clearPipes(void);
+    void drawPipes();
+    void clearPipes();
     std::vector<Pipe> pipePool;
 private:
     Game* game;

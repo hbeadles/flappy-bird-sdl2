@@ -39,7 +39,9 @@ bool PipeManager::containsInactivePipe(bool isTop) {
     return false;
 }
 
-void PipeManager::generatePipePair(float &topY, float &bottomY, float &gap, float gapMin, float gapMax, float gapFraction) {
+void PipeManager::generatePipePair(float &topY, float &bottomY, float &gap,
+    float gapMin, float gapMax, float gapFraction) {
+
     gapFraction = std::clamp(gapFraction, 0.0f, 1.0f);
     float gapHeight = gapMin + (gapMax - gapMin) * gapFraction;
 

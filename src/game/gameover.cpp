@@ -23,7 +23,7 @@ void GameOverStage::init() {
     base = loadTexture(game->app, "gfx/base.png");
     gameOverTexture = loadTexture(game->app, "gfx/gameover.png");
     int w, h;
-    SDL_QueryTexture(gameOverTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(gameOverTexture, nullptr, nullptr, &w, &h);
     gameOverTextureWidth = w;
     gameOverTextureHeight = h;
     backgroundY = 0;
@@ -39,7 +39,9 @@ void GameOverStage::reset() {
     restart = false;
 }
 void GameOverStage::handleInput(const Uint8* state) {
-    if (state[SDL_SCANCODE_SPACE] || state[SDL_SCANCODE_RETURN]) {
+    bool spacePressed = state[SDL_SCANCODE_SPACE] && !game->spaceWasPressed;
+    bool returnPressed = state[SDL_SCANCODE_RETURN] && !game->returnWasPressed;
+    if (spacePressed || returnPressed) {
         printf("Restarting game...\n");
         restart = true;
     }
@@ -51,7 +53,7 @@ StageType GameOverStage::update(float deltaTime) {
         backgroundY = (SCREEN_HEIGHT / 2 - gameOverTextureHeight);
     }
     if (restart) {
-        return StageType::GAMEPLAY;
+        return StageType::GAME_INTRO;
     }
 
     return StageType::NONE;

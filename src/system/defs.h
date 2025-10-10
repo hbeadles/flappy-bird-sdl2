@@ -31,6 +31,7 @@ enum class StageType {
     NONE,
     GAMEPLAY,
     GAME_OVER,
+    GAME_INTRO
     // Future stages can be added here:
     // MAIN_MENU,
     // PAUSE,
