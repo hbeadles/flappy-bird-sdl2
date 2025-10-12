@@ -7,7 +7,12 @@
 #include <system/common.h>
 
 class Game;
-
+/**
+ *@class Text
+ *@brief Text Rendering class that uses textures to display / render numbers to a screen
+ *@name Text
+ *@author Hayden Beadles
+ */
 class Text {
 public:
     Text(Game* game);
