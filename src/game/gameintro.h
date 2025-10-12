@@ -7,16 +7,21 @@
 #include <game/stage.h>
 #include <system/common.h>
 
+/**
+ * @name GameIntroStage
+ * @class GameIntroStage
+ * @brief Stage for the Game Intro screen in Flappy Bird. Extends Stage class.
+ */
 class GameIntroStage : public Stage {
 public:
-    GameIntroStage(Game *game);
-    virtual ~GameIntroStage() = default;
-    virtual void init() override;
-    virtual void handleInput(const Uint8* state) override;
-    virtual StageType update(float deltaTime) override;
-    virtual void reset() override;
+    explicit GameIntroStage(Game *game);
+    ~GameIntroStage() override = default;
+    void init() override;
+    void handleInput(const Uint8* state) override;
+    StageType update(float deltaTime) override;
+    void reset() override;
 
-    virtual void draw() override;
+    void draw() override;
 private:
     bool start=false;
     void drawBackground();

@@ -11,6 +11,12 @@
 #include <game/gameover.h>
 #include <game/gameintro.h>
 
+/**
+ * @name Game
+ * @brief Constructor for Game class, sets up initial objects
+ * @param app Application struct reference
+ * @memberof Game
+ */
 Game::Game(Application &app): app(app), pipe_manager(nullptr) {
     std::srand(std::time(nullptr));  // Initialize random seed
     app.screenHeight = SCREEN_HEIGHT;
@@ -25,6 +31,13 @@ Game::~Game() {
 
 }
 
+/**
+ * @name initialize
+ * @brief Initializes SDL, Atlas and stages
+ * @param title Title of the game window
+ * @return True if initialization was successful, false otherwise
+ * @memberof Game
+ */
 bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
     initAtlas(app);
@@ -39,6 +52,11 @@ bool Game::initialize(const std::string& title) {
     return init;
 };
 
+/**
+ * @name initFlappy
+ * @brief Initializes the Flappy character with textures and properties
+ * @memberof Game
+ */
 void Game::initFlappy() {
     flappy = std::make_unique<Flappy>();
     flappy->idleTexture = getAtlasImage(app,  "gfx/yellowbird-01.png");
@@ -62,6 +80,12 @@ void Game::initFlappy() {
 
 }
 
+/**
+ * @name handleFlappy
+ * @brief Handles input for the Flappy character
+ * @param state Current keyboard state
+ * @memberof Game
+ */
 void Game::handleFlappy(const Uint8 *state) {
     if (state[SDL_SCANCODE_SPACE] && flappy->active) {
         currentState = JUMP;
@@ -70,11 +94,17 @@ void Game::handleFlappy(const Uint8 *state) {
     }
 }
 
+/**
+ * @name updateFlappy
+ * @brief Updates the Flappy character position and animation, if jumping
+ * @param deltaTime Time elapsed since last frame
+ * @memberof Game
+ */
 void Game::updateFlappy(float deltaTime) {
 
     flappy->y += flappy->dy * deltaTime;
     flappy->x += flappy->dx * deltaTime;
-    flappy->dy += GRAVITY * 30.0f;
+    flappy->dy += GRAVITY * 60.0f;
 
     float targetRotation = flappy->dy * FLAPPY_ROTATION_SPEED * deltaTime;
     targetRotation = std::clamp(targetRotation, -35.0f, FLAPPY_MAX_ROTATION);
@@ -160,6 +190,11 @@ void Game::updateFlappy(float deltaTime) {
 
 }
 
+/**
+ * @name renderFlappy
+ * @brief Renders the Flappy character on screen. Handles if its jumping or not
+ * @memberof Game
+ */
 void Game::renderFlappy() {
     if (flappy->isJumping) {
         blitAtlasImage(app,
@@ -181,7 +216,14 @@ void Game::renderFlappy() {
 }
 
 
-
+/**
+ * @name transitionToStage
+ * @brief Transitions the game to a new stage, initializing it as needed. This is the function we
+ * use to allow stages to communicate with the Game class. It's not the best way, but it works.
+ * (Why its not ideal) - It ties Game to the stages, making them less separable.
+ * @param stageType The type of stage to transition to
+ * @memberof Game
+ */
 void Game::transitionToStage(StageType stageType) {
     if (currentStage) {
         //currentStage->cleanup();
@@ -203,6 +245,11 @@ void Game::transitionToStage(StageType stageType) {
     }
 }
 
+/**
+ * @name runloop
+ * @brief Main game loop, processes input, updates game state, and renders output
+ * @memberof Game
+ */
 void Game::runloop(){
     while(mIsRunning){
         processInput();
@@ -211,6 +258,11 @@ void Game::runloop(){
     }
 };
 
+/**
+ * @name processInput
+ * @brief Processes user input events and updates game state accordingly
+ * @memberof Game
+ */
 void Game::processInput() {
 
     SDL_Event event;
@@ -256,6 +308,11 @@ void Game::processInput() {
     returnWasPressed = state[SDL_SCANCODE_RETURN];
 };
 
+/**
+ * @name updateGame
+ * @brief Updates the game state, class Stage updates and Flappy character updates if they exist
+ * @memberof Game
+ */
 void Game::updateGame() {
     while(!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
@@ -276,6 +333,11 @@ void Game::updateGame() {
     }
 };
 
+/**
+ * @name generateOutput
+ * @brief Renders the current game state to the screen
+ * @memberof Game
+ */
 void Game::generateOutput(){
     prepareScene(app);
     if (currentStage) {
@@ -287,6 +349,11 @@ void Game::generateOutput(){
     presentScene(app);
 }
 
+/**
+ * @name shutdown
+ * @brief Cleans up resources and shuts down the game
+ * @memberof Game
+ */
 void Game::shutdown(){
     cleanup(app);
 }

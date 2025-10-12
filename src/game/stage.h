@@ -9,6 +9,11 @@
 // Forward declaration to avoid circular dependency
 class Game;
 
+/**
+ * @name Stage
+ * @class Stage
+ * @brief Base class for different stages of Flappy Bird
+ */
 class Stage {
 public:
     Stage(Game *game, StageType type);
@@ -20,7 +25,7 @@ public:
     bool hasPipeManager();
 
     virtual void draw();
-    StageType getType() const;
+    [[nodiscard]] StageType getType() const;
 protected:
     Game* game;
 private:

@@ -8,15 +8,20 @@
 #include <system/common.h>
 #include <draw/text.h>
 
+/**
+ * @name FlappyBirdStage
+ * @class FlappyBirdStage
+ * @brief Stage for the main gameplay of Flappy Bird. Extends Stage class.
+ */
 class FlappyBirdStage : public Stage {
 public:
-    FlappyBirdStage(Game *game);
-    virtual ~FlappyBirdStage() = default;
-    virtual void init() override;
-    virtual void handleInput(const Uint8* state) override;
-    virtual StageType update(float deltaTime) override;
-    virtual void reset() override;
-    virtual void draw() override;
+    explicit FlappyBirdStage(Game *game);
+    ~FlappyBirdStage() override = default;
+    void init() override;
+    void handleInput(const Uint8* state) override;
+    StageType update(float deltaTime) override;
+    void reset() override;
+    void draw() override;
 private:
     Text textWriter;
     void drawBackground();
@@ -25,7 +30,7 @@ private:
     SDL_Texture* base;
     double backgroundX;
     double baseX;
-    int gameOverTimer = FPS * 3;
+    int gameOverTimer = FPS * 2;
 };
 
 

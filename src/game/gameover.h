@@ -7,16 +7,21 @@
 #include <game/stage.h>
 #include <system/common.h>
 
+/**
+ * @name GameOverStage
+ * @class GameOverStage
+ * @brief Stage for the Game Over screen in Flappy Bird. Extends Stage class.
+ */
 class GameOverStage : public Stage {
 public:
-    GameOverStage(Game *game);
-    virtual ~GameOverStage() = default;
-    virtual void init() override;
-    virtual void handleInput(const Uint8* state) override;
-    virtual StageType update(float deltaTime) override;
-    virtual void reset() override;
+    explicit GameOverStage(Game *game);
+    ~GameOverStage() override = default;
+    void init() override;
+    void handleInput(const Uint8* state) override;
+    StageType update(float deltaTime) override;
+    void reset() override;
 
-    virtual void draw() override;
+    void draw() override;
 private:
     bool restart=false;
     void drawBackground();

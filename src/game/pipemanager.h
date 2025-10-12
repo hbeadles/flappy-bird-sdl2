@@ -8,6 +8,11 @@
 
 class Game;
 
+/**
+ * @name PipeManager
+ * @class PipeManager
+ * @brief Manages a set of pipes for the Flappy Bird game
+ */
 class PipeManager {
 public:
     explicit PipeManager(Game* game);
