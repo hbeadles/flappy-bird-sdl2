@@ -16,12 +16,18 @@ class Game;
 class Text {
 public:
     Text(Game* game);
-    ~Text() = default;
+    ~Text();
     void initText();
+    void loadFonts();
+
     void drawNumber(int number, int x, int y);
     void drawScore(int score, int x, int y);
+    TTF_Font * getFont() {return font;}
 private:
+    TTF_Font *font;
     Game* game;
-    AtlasImage* numberTextures[10]{};
+    SDL_Rect* numberText;
+    // AtlasImage* numberTextures[10]{};
+    SDL_Texture* numberTexturesTexture[10]{};
 };
 #endif //FLAPPY_BIRD_SDL2_TEXT_H

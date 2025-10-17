@@ -37,3 +37,37 @@ SDL_Texture* getTexture(Application & app, const std::string & filename){
     // Key found, return the associated texture
     return it->second;
 }
+
+/**
+ * @name loadTextTexture
+ * @brief Renders text to a texture using the specified font and color.
+ * Caches the texture for future use.
+ * @param app Application struct reference
+ * @param text Text string to render
+ * @param color SDL_Color for the text
+ * @param font TTF_Font pointer to use for rendering
+ * @return SDL_Texture* - Rendered text texture pointer or nullptr on failure
+ **/
+SDL_Texture* loadTextTexture(Application &app,
+    const std::string &text,
+    SDL_Color color,
+    TTF_Font *font) {
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (textSurface == nullptr) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        return nullptr;
+    }
+    SDL_Texture* texture = getTexture(app, text);
+    if (!texture) {
+        texture = SDL_CreateTextureFromSurface(app.renderer, textSurface);
+        if (texture == nullptr) {
+            printf("Unable to creaet texture from rendered text! SDL Error: %s\n", SDL_GetError());
+            return nullptr;
+        }
+        app.textureCache[text] = texture;
+    }
+
+    SDL_FreeSurface(textSurface);
+    return texture;
+}
+

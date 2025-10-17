@@ -77,6 +77,11 @@ bool initSDL(Application &app, const std::string& title){
                     printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
                     success = false;
                 }
+
+                if (TTF_Init() == -1) {
+                    printf("SDL_ttf could not initialize, Error: %s\n", TTF_GetError());
+                    success = false;
+                }
             }
         }
     }

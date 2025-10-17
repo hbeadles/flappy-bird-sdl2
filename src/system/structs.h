@@ -34,6 +34,8 @@ struct Flappy{
 
 struct AtlasImage
 {
+    SDL_Rect srcRect;
+    int scale;
     SDL_Rect rect;
     SDL_Texture* texture;
     int rotated;

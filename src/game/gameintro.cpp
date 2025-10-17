@@ -13,15 +13,16 @@
  * @memberof GameIntroStage
  */
 GameIntroStage::GameIntroStage(Game *game) : Stage(game, StageType::GAME_INTRO),
-                                           background(nullptr),
-                                           base(nullptr),
-                                           gameIntroTexture(nullptr),
-                                           backgroundX(0),
-                                           backgroundY(0),
-                                           baseX(0),
-                                           gameIntroTextureWidth(0),
-                                           gameIntroTextureHeight(0)
-{
+                                             background(nullptr),
+                                             base(nullptr),
+                                             flappyBirdText(nullptr),
+                                             gameStartText(nullptr),
+                                             flappyBirdRect(nullptr),
+                                             backgroundX(0),
+                                             backgroundY(0),
+                                             baseX(0),
+                                             gameStartTextWidth(0),
+                                             gameStartTextHeight(0) {
 }
 
 /**
@@ -30,13 +31,15 @@ GameIntroStage::GameIntroStage(Game *game) : Stage(game, StageType::GAME_INTRO),
  * @memberof GameIntroStage
  */
 void GameIntroStage::init() {
-    background = loadTexture(game->app, "gfx/background-day.png");
-    base = loadTexture(game->app, "gfx/base.png");
-    gameIntroTexture = loadTexture(game->app, "gfx/message.png");
-    int w, h;
-    SDL_QueryTexture(gameIntroTexture, NULL, NULL, &w, &h);
-    gameIntroTextureWidth = w;
-    gameIntroTextureHeight = h;
+    background = loadTexture(game->app, "gfx/background-v2.png");
+    base = loadTexture(game->app, "gfx/base_brown.png");
+    flappyBirdText = loadTextTexture(game->app, "Flappy Bird",
+        {255, 191, 0}, game->textWriter.getFont());
+    gameStartText = loadTextTexture(game->app, "Game Start",
+        {205, 127, 50}, game->textWriter.getFont());
+
+    SDL_QueryTexture(flappyBirdText, NULL, NULL, &flappyBirdTextWidth, &flappyBirdTextHeight);
+    SDL_QueryTexture(gameStartText, NULL, NULL, &gameStartTextWidth, &gameStartTextHeight);
     backgroundY = 0;
     backgroundX = 0;
     baseX = 0;
@@ -83,8 +86,8 @@ void GameIntroStage::handleInput(const Uint8* state) {
  */
 StageType GameIntroStage::update(float deltaTime) {
     backgroundY += deltaTime * 50;
-    if (backgroundY >= (SCREEN_HEIGHT / 2 - gameIntroTextureHeight / 2)) {
-        backgroundY = (SCREEN_HEIGHT / 2 - gameIntroTextureHeight / 2);
+    if (backgroundY >= (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 2.5)) {
+        backgroundY = (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 2.5);
     }
     if (start) {
         return StageType::GAMEPLAY;
@@ -110,8 +113,10 @@ void GameIntroStage::draw() {
  * @memberof GameIntroStage
  */
 void GameIntroStage::drawIntro() {
-    blit(game->app, gameIntroTexture,
-        SCREEN_WIDTH / 2 - (gameIntroTextureWidth / 2),  backgroundY, 0, SDL_FLIP_NONE);
+    blit(game->app, flappyBirdText,
+        SCREEN_WIDTH / 2 - (flappyBirdTextWidth / 2),  backgroundY, 0, SDL_FLIP_NONE);
+    blit(game->app, gameStartText,
+        SCREEN_WIDTH / 2 - (gameStartTextWidth / 2),  backgroundY + flappyBirdTextHeight + 20, 0, SDL_FLIP_NONE);
 }
 
 /**

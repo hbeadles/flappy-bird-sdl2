@@ -9,7 +9,7 @@
 #define TEXT_FILE_PATH DATA_DIR "/text.json"
 #endif
 #ifndef ATLAS_PNG_PATH
-#define ATLAS_PNG_PATH GFX_DIR "/atlas.png"
+#define ATLAS_PNG_PATH GFX_DIR "/atlas_v2.png"
 #endif
 #ifndef TEXT_PNG_PATH
 #define TEXT_PNG_PATH GFX_DIR "/text.png"

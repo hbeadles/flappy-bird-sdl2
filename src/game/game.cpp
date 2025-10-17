@@ -17,7 +17,7 @@
  * @param app Application struct reference
  * @memberof Game
  */
-Game::Game(Application &app): app(app), pipe_manager(nullptr) {
+Game::Game(Application &app): app(app), pipe_manager(nullptr), textWriter(this) {
     std::srand(std::time(nullptr));  // Initialize random seed
     app.screenHeight = SCREEN_HEIGHT;
     app.screenWidth = SCREEN_WIDTH;
@@ -41,6 +41,7 @@ Game::~Game() {
 bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
     initAtlas(app);
+    textWriter.initText();
     stages[StageType::GAME_INTRO] = std::make_unique<GameIntroStage>(this);
     stages[StageType::GAMEPLAY] = std::make_unique<FlappyBirdStage>(this);
     stages[StageType::GAME_OVER] = std::make_unique<GameOverStage>(this);

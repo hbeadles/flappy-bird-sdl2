@@ -30,6 +30,12 @@ private:
     SDL_Texture* background;
     SDL_Texture* base;
     SDL_Texture* gameOverTexture;
+    SDL_Texture* restartText;
+    SDL_Texture* hitEnter;
+    int restartTextWidth;
+    int restartTextHeight;
+    int hitEnterWidth;
+    int hitEnterHeight;
     int gameOverTextureWidth;
     int gameOverTextureHeight;
     double backgroundX;

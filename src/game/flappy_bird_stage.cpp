@@ -9,7 +9,6 @@
 
 FlappyBirdStage::FlappyBirdStage(Game *game)
     : Stage(game, StageType::GAMEPLAY),
-      textWriter(game),
       background(nullptr),
       base(nullptr),
       backgroundX(0),
@@ -18,12 +17,11 @@ FlappyBirdStage::FlappyBirdStage(Game *game)
 
 
 void FlappyBirdStage::init() {
-    background = loadTexture(game->app, "gfx/background-day.png");
-    base = loadTexture(game->app, "gfx/base.png");
+    background = loadTexture(game->app, "gfx/background-v2.png");
+    base = loadTexture(game->app, "gfx/base_brown.png");
     if (hasPipeManager()) {
         game->pipe_manager->initPipes();
     }
-    textWriter.initText();
 };
 
 void FlappyBirdStage::reset() {
@@ -68,7 +66,7 @@ void FlappyBirdStage::draw() {
         game->pipe_manager->drawPipes();
     }
     drawBase();
-    textWriter.drawScore(game->score, (SCREEN_WIDTH / 2) - 24, 50);
+    game->textWriter.drawScore(game->score, (SCREEN_WIDTH / 2) - 24, 50);
 
 }
 

@@ -3,9 +3,8 @@
 //
 #include <draw/text.h>
 #include <game/game.h>
-#include <system/atlas.h>
 #include <draw/draw.h>
-
+#include <draw/textures.h>
 /**
  * @name Text
  * @brief Constructor for Text class, used in @flappy_bird_stage.cpp
@@ -13,7 +12,12 @@
  * @memberof Text
  */
 Text::Text(Game* game): game(game) {
-    initText();
+}
+
+Text::~Text() {
+    TTF_CloseFont(font);
+    font = nullptr;
+    numberText = nullptr;
 }
 
 /**
@@ -24,11 +28,29 @@ Text::Text(Game* game): game(game) {
  * @memberof Text
  */
 void Text::initText() {
+    loadFonts();
     for (int i = 0; i < 10; i++) {
         std::string filename = "gfx/number-" + std::to_string(i) + ".png";
-        numberTextures[i] = getAtlasImage(game->app, filename);
+        numberTexturesTexture[i] = loadTextTexture(
+            game->app,
+            std::to_string(i),
+            {255, 255, 255, 255},
+            font);
+    }
+
+    numberText = new SDL_Rect{0, 0, 0, 0};
+
+    SDL_QueryTexture(numberTexturesTexture[0], nullptr, nullptr, &numberText->w, &numberText->h);
+}
+
+void Text::loadFonts() {
+    std::string resolved_path = std::string(FONTS_DIR) + "/sixtyfourconverge.ttf";
+    font = TTF_OpenFont(resolved_path.c_str(), 26);
+    if (font == nullptr) {
+        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
     }
 }
+
 
 /**
  * @name drawNumber
@@ -41,7 +63,7 @@ void Text::initText() {
  */
 void Text::drawNumber(int number, int x, int y) {
     if (number >= 0 && number <= 9) {
-        blitAtlasImage(game->app, numberTextures[number], x, y, 0, SDL_FLIP_NONE);
+        blit(game->app, numberTexturesTexture[number], x, y);
     }
 }
 
@@ -62,11 +84,11 @@ void Text::drawScore(int score, int x, int y) {
 
     // Convert score to string to get digits
     std::string scoreStr = std::to_string(score);
-    int digitWidth = numberTextures[0]->rect.w; // Assuming all digits have same width
+    int digitWidth = numberText->w;
 
     // Draw each digit from left to right
     for (size_t i = 0; i < scoreStr.length(); i++) {
-        int digit = scoreStr[i] - '0'; // Convert char to int
+         int digit = scoreStr[i] - '0'; // Convert char to int
         drawNumber(digit, x + (i * digitWidth), y);
     }
 }

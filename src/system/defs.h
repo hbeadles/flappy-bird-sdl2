@@ -9,7 +9,7 @@
 #define SCREEN_WIDTH 288
 #define SCREEN_HEIGHT 512
 #define GRAVITY .2f
-#define BASE_HEIGHT 112
+#define BASE_HEIGHT 48
 #define MAX_SND_CHANNELS 8
 #define FPS 60
 

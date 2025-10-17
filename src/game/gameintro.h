@@ -29,9 +29,13 @@ private:
     void drawBase();
     SDL_Texture* background;
     SDL_Texture* base;
-    SDL_Texture* gameIntroTexture;
-    int gameIntroTextureWidth;
-    int gameIntroTextureHeight;
+    SDL_Texture* flappyBirdText;
+    SDL_Texture* gameStartText;
+    SDL_Rect * flappyBirdRect;
+    int flappyBirdTextWidth;
+    int flappyBirdTextHeight;
+    int gameStartTextWidth;
+    int gameStartTextHeight;
     double backgroundX;
     double backgroundY;
     double baseX;

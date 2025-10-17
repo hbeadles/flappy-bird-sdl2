@@ -71,5 +71,5 @@ void blitAtlasImage(Application & app, AtlasImage* atlasImage, int x, int y, int
 		dest.y -= dest.h / 2;
 	}
 
-	SDL_RenderCopyEx(app.renderer, atlasImage->texture, &atlasImage->rect, &dest, angle, NULL, flip);
+	SDL_RenderCopyEx(app.renderer, atlasImage->texture, &atlasImage->srcRect, &dest, angle, NULL, flip);
 }

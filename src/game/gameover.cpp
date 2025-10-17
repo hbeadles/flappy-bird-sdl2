@@ -19,13 +19,14 @@ GameOverStage::GameOverStage(Game *game) : Stage(game, StageType::GAME_OVER),
 }
 
 void GameOverStage::init() {
-    background = loadTexture(game->app, "gfx/background-day.png");
-    base = loadTexture(game->app, "gfx/base.png");
-    gameOverTexture = loadTexture(game->app, "gfx/gameover.png");
-    int w, h;
-    SDL_QueryTexture(gameOverTexture, nullptr, nullptr, &w, &h);
-    gameOverTextureWidth = w;
-    gameOverTextureHeight = h;
+    background = loadTexture(game->app, "gfx/background-v2.png");
+    base = loadTexture(game->app, "gfx/base_brown.png");
+    gameOverTexture = loadTextTexture(game->app, "Game Over", {255, 191, 0}, game->textWriter.getFont());
+    restartText = loadTextTexture(game->app, "Restart?", {0xff, 255, 0xff}, game->textWriter.getFont());
+    hitEnter = loadTextTexture(game->app, "Hit Enter", {205, 127, 50}, game->textWriter.getFont());
+    SDL_QueryTexture(gameOverTexture, nullptr, nullptr, &gameOverTextureWidth, &gameOverTextureHeight);
+    SDL_QueryTexture(restartText, nullptr, nullptr, &restartTextWidth, &restartTextHeight);
+    SDL_QueryTexture(hitEnter, nullptr, nullptr, &hitEnterWidth, &hitEnterHeight);
     backgroundY = 0;
     backgroundX = 0;
     baseX = 0;
@@ -49,8 +50,8 @@ void GameOverStage::handleInput(const Uint8* state) {
 
 StageType GameOverStage::update(float deltaTime) {
     backgroundY += deltaTime * 50;
-    if (backgroundY >= (SCREEN_HEIGHT / 2 - gameOverTextureHeight)) {
-        backgroundY = (SCREEN_HEIGHT / 2 - gameOverTextureHeight);
+    if (backgroundY >= (SCREEN_HEIGHT / 2 - gameOverTextureHeight * 3)) {
+        backgroundY = (SCREEN_HEIGHT / 2 - gameOverTextureHeight * 3);
     }
     if (restart) {
         return StageType::GAME_INTRO;
@@ -72,6 +73,10 @@ void GameOverStage::draw() {
 void GameOverStage::drawGameOver() {
     blit(game->app, gameOverTexture,
         SCREEN_WIDTH / 2 - (gameOverTextureWidth / 2),  backgroundY, 0, SDL_FLIP_NONE);
+    blit(game->app, restartText,
+    SCREEN_WIDTH / 2 - (restartTextWidth / 2),  backgroundY + gameOverTextureHeight + 20, 0, SDL_FLIP_NONE);
+    blit(game->app, hitEnter,
+        SCREEN_WIDTH / 2 - (hitEnterWidth / 2),  backgroundY + gameOverTextureHeight + restartTextHeight + 40, 0, SDL_FLIP_NONE);
 }
 
 

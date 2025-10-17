@@ -1,5 +1,6 @@
 #include <system/atlas.h>
-#include <boost/json.hpp>
+#include <boost/json/src.hpp>
+//#include <boost/json.hpp>
 #include <boost/system/error_code.hpp>
 
 namespace jb = boost::json;
@@ -11,7 +12,6 @@ void initAtlas(Application & app) {
     texture = loadTexture(app, ATLAS_PNG_PATH);
     textTexture = loadTexture(app, TEXT_PNG_PATH);
     loadAtlasData(app);
-    loadAtlasData(app, TEXT_FILE_PATH, textTexture);
 
 
 }
@@ -49,9 +49,12 @@ static void loadAtlasData(Application & app){
         int y = obj["y"].as_int64();
         int w = obj["w"].as_int64();
         int h = obj["h"].as_int64();
+        int scale = obj["scale"].as_int64();
+
         int rotated = obj["rotated"].as_int64();
         AtlasImage* atlasImage = new AtlasImage();
-        atlasImage->rect = {x, y, w, h};
+        atlasImage->srcRect = {x, y, w, h};
+        atlasImage->rect = {x, y, w * scale, h * scale};
         atlasImage->rotated = rotated;
         atlasImage->texture = texture;
         app.atlas[filename] = atlasImage;
@@ -79,9 +82,11 @@ static void loadAtlasData(Application & app, std::string filename, SDL_Texture* 
         int y = obj["y"].as_int64();
         int w = obj["w"].as_int64();
         int h = obj["h"].as_int64();
+        int scale = obj["scale"].as_int64();
         int rotated = obj["rotated"].as_int64();
         AtlasImage* atlasImage = new AtlasImage();
-        atlasImage->rect = {x, y, w, h};
+        atlasImage->srcRect = {x, y, w, h};
+        atlasImage->rect = {x, y, w * scale, h * scale};
         atlasImage->rotated = rotated;
         atlasImage->texture = texture;
         app.atlas[filename] = atlasImage;

@@ -6,7 +6,6 @@
 #define FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
 #include <game/stage.h>
 #include <system/common.h>
-#include <draw/text.h>
 
 /**
  * @name FlappyBirdStage
@@ -23,7 +22,6 @@ public:
     void reset() override;
     void draw() override;
 private:
-    Text textWriter;
     void drawBackground();
     void drawBase();
     SDL_Texture* background;

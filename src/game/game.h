@@ -5,7 +5,7 @@
 #ifndef FLAPPY_BIRD_SDL2_GAME_H
 #define FLAPPY_BIRD_SDL2_GAME_H
 #include <system/common.h>
-
+#include <draw/text.h>
 #include <game/pipemanager.h>
 
 // Forward declaration to avoid circular dependency
@@ -39,8 +39,9 @@ public:
     std::unique_ptr<Flappy> flappy=nullptr;
     bool spaceWasPressed = false;
     bool returnWasPressed = false;
-private:
+    Text textWriter;
 
+private:
     std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
     Stage* currentStage = nullptr;
     SDL_Window* mWindow{};

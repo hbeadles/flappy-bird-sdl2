@@ -11,7 +11,7 @@
  * @param game Game object, dependency injection
  * @memberof PipeManager
  */
-PipeManager::PipeManager(Game* game): game(game) {
+PipeManager::PipeManager(Game* game): game(game), gap_height(0.0f) {
 
 }
 
@@ -23,7 +23,7 @@ PipeManager::PipeManager(Game* game): game(game) {
  */
 void PipeManager::initPipes() {
     if (pipeTexture == nullptr) {
-        pipeTexture = getAtlasImage(game->app, "gfx/pipe-green.png");
+        pipeTexture = getAtlasImage(game->app, "gfx/pipe-blue.png");
     }
     for (int i = 0; i < TOTAL_PIPES; i++) {
         Pipe pipe;
@@ -35,6 +35,18 @@ void PipeManager::initPipes() {
         pipePool.push_back(pipe);
     }
     spawnTimer = 0.0f;
+    // Linear Interpolation to get gap height based on mix / max / fraction
+    // Gap fraction is the amount to interpolate between min / max
+    // This is equivalent to a lerp call
+    gap_height = G_MIN + (G_MAX - G_MIN) * gap_fraction;
+// We need to bound our min / max based on screen height and base.
+    // The maxGap is the amount we could go before exceeding our screen height
+    // minGap is the minimum we can go before exceeding the base height
+    topGapMax = (SCREEN_HEIGHT - BASE_HEIGHT) - gap_height - PIPE_HEIGHT + 50;
+    bottomGapMax = PIPE_HEIGHT - BASE_HEIGHT;
+
+    printf("topGapMax = %f\n", topGapMax);
+    printf("bottomGapMax = %f\n", bottomGapMax);
 }
 
 /**
@@ -65,32 +77,23 @@ bool PipeManager::containsInactivePipe(bool isTop) {
     return false;
 }
 
-/**
- * @name generatePipePair
- * @brief Generates a pair of pipes (top and bottom) with a gap between them. This is the
- * main function that creates the pipe positions.
- * @param topY Reference to float to store top pipe Y position
- * @param bottomY Reference to float to store bottom pipe Y position
- * @param gap Reference to float to store gap height
- * @param gapMin Minimum gap height
- * @param gapMax Maximum gap height
- * @param gapFraction Fraction (0.0 to 1.0) to interpolate between min and max gap height
- * @memberof PipeManager
- */
-void PipeManager::generatePipePair(float &topY, float &bottomY, float &gap,
-    float gapMin, float gapMax, float gapFraction) {
-
-    gapFraction = std::clamp(gapFraction, 0.0f, 1.0f);
-    float gapHeight = gapMin + (gapMax - gapMin) * gapFraction;
-
-    float maxGapY = (SCREEN_HEIGHT - BASE_HEIGHT) - gapHeight - (PIPE_HEIGHT) + 50;
-    // so top pipe doesn't fully go offscreen (optional)
-    float minGapY = PIPE_HEIGHT - BASE_HEIGHT;
-    float gapY = randomFloat(minGapY, maxGapY);
+// /**
+//  * @name generatePipePair
+//  * @brief Generates a pair of pipes (top and bottom) with a gap between them. This is the
+//  * main function that creates the pipe positions.
+//  * @param topY Reference to float to store top pipe Y position
+//  * @param bottomY Reference to float to store bottom pipe Y position
+//  * @param gap Reference to float to store gap height
+//  * @memberof PipeManager
+//  */
+void PipeManager::generatePipePair(float& topY, float& bottomY, float &gap) {
+    float gapY = randomFloat(topGapMax, bottomGapMax);
     topY = gapY - PIPE_HEIGHT;
-    bottomY = gapY + gapHeight;
-    gap = gapHeight;
+    bottomY = gapY + gap_height;
+    gap = gap_height;
 }
+
+
 
 
 /**
@@ -113,7 +116,7 @@ void PipeManager::updatePipes(Flappy* flappy, float deltaTime) {
                 return !pipe.active && pipe.isTop;
             });
             float topY, bottomY, gap;
-            generatePipePair(topY, bottomY, gap, G_MIN, 100, .5f);
+            generatePipePair(topY, bottomY, gap);
             bottomPipe->active = true;
             bottomPipe->x = SCREEN_WIDTH;
             bottomPipe->y = bottomY;
