@@ -41,9 +41,6 @@ jobs:
           cp build-web/*.html gh-pages/
           cp build-web/*.js gh-pages/
           cp build-web/*.wasm gh-pages/
-          cp build-web/data/*.json gh-pages/data/
-          cp build-web/gfx/*.png gh-pages/gfx/
-          cp build-web/fonts/*.ttf gh-pages/fonts/
           cp build-web/*.data gh-pages/ || true  # Optional, in case there are data files
 
       - name: Setup Pages
