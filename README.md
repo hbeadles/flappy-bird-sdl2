@@ -21,6 +21,7 @@ The goal is to show how something like this is implemented in SDL2, from the gro
 ## View it on the Web!
 You can view this via an emscripten build here: 
 
+### [Flappy Bird SDL2 - Browser](https://hbeadles.github.io/flappy-bird-sdl2/flappy-bird-sdl2.html)
 
 
 ### Notes on Pipes
