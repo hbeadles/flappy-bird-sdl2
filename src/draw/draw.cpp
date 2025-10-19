@@ -48,6 +48,15 @@ void blit(Application & app, SDL_Texture* texture, int x, int y, double angle, S
 
 }
 
+void blitEx(Application &app, SDL_Texture *texture, SDL_Rect *srcRect, SDL_Rect *destRect, double angle, SDL_Point* center, SDL_RendererFlip flip) {
+    SDL_RenderCopyEx(app.renderer, texture, srcRect, destRect, angle, center, flip);
+}
+
+void colorModulate(SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b) {
+    SDL_SetTextureColorMod(texture, r, g, b);
+}
+
+
 /**
  * @name blitAtlasImage
  * @brief Renders an AtlasImage at the specified (x, y) coordinates with optional centering, rotation, and flipping.

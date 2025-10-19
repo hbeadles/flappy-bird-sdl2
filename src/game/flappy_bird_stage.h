@@ -1,7 +1,6 @@
 //
 // Created by Hayden Beadles on 10/5/25.
 //
-
 #ifndef FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
 #define FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
 #include <game/stage.h>

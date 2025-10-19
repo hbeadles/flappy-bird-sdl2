@@ -31,8 +31,9 @@ GameIntroStage::GameIntroStage(Game *game) : Stage(game, StageType::GAME_INTRO),
  * @memberof GameIntroStage
  */
 void GameIntroStage::init() {
-    background = loadTexture(game->app, "gfx/background-v2.png");
-    base = loadTexture(game->app, "gfx/base_brown.png");
+    background = loadTexture(game->app, "gfx/background-2.png");
+    colorModulate(background, 200, 200, 200);
+    base = loadTexture(game->app, "gfx/base_dark_large.png");
     flappyBirdText = loadTextTexture(game->app, "Flappy Bird",
         {255, 191, 0}, game->textWriter.getFont());
     gameStartText = loadTextTexture(game->app, "Game Start",
@@ -125,8 +126,21 @@ void GameIntroStage::drawIntro() {
  * @memberof GameIntroStage
  */
 void GameIntroStage::drawBackground() {
+    SDL_Point center = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
+    int w, h;
+    SDL_QueryTexture(background, nullptr, nullptr, &w, &h);
+
+
     for (double x = backgroundX; x < SCREEN_WIDTH; x += SCREEN_WIDTH) {
-        blit(game->app, background, x, 0);
+        SDL_Rect srcRect ={
+            0,
+            0,
+            w,h
+        };
+        SDL_Rect dstRect = {
+            (int)x, 0, SCREEN_WIDTH, SCREEN_HEIGHT
+        };
+        blitEx(game->app, background, &srcRect, &dstRect, 0.0, &center, SDL_FLIP_NONE);
     }
 }
 
@@ -136,8 +150,20 @@ void GameIntroStage::drawBackground() {
  * @memberof GameIntroStage
  */
 void GameIntroStage::drawBase() {
+    SDL_Point center = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
+    int w, h;
+    SDL_QueryTexture(base, nullptr, nullptr, &w, &h);
+
     for (double x = baseX; x < SCREEN_WIDTH; x += SCREEN_WIDTH) {
-        blit(game->app, base, x, SCREEN_HEIGHT - BASE_HEIGHT);
+        SDL_Rect srcRect ={
+            0,
+            0,
+            w,h
+        };
+        SDL_Rect dstRect = {
+            (int) x, SCREEN_HEIGHT - BASE_HEIGHT, w, h
+        };
+        blitEx(game->app, base, &srcRect, &dstRect, 0.0, &center, SDL_FLIP_NONE);
     }
 }
 
