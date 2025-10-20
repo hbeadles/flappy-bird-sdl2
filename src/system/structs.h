@@ -57,6 +57,7 @@ struct Pipe {
 struct Application {
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* renderTarget;
     int screenWidth;
     int screenHeight;
     double deltaTime;

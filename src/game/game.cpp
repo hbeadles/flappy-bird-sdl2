@@ -340,14 +340,15 @@ void Game::updateGame() {
  * @memberof Game
  */
 void Game::generateOutput(){
-    prepareScene(app);
+    //prepareScene(app);
+    prepareSceneWithCamera(app);
     if (currentStage) {
         currentStage->draw();
     }
     if (flappy != nullptr) {
         renderFlappy();
     }
-    presentScene(app);
+    presentSceneWithCamera(app, cameraRotation, &cameraCenter);
 }
 
 /**

@@ -23,7 +23,7 @@ public:
     bool initialize(const std::string& title);
     void runloop();
     void shutdown();
-    Application app{};
+    Application& app;
     void processInput();
     void updateGame();
     void generateOutput();
@@ -41,6 +41,8 @@ public:
     bool returnWasPressed = false;
     Text textWriter;
 
+    float cameraRotation = 0.0f;
+    SDL_Point cameraCenter = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
 private:
     std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
     Stage* currentStage = nullptr;

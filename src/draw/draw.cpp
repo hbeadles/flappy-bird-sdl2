@@ -10,12 +10,41 @@ void prepareScene(Application & app){
     SDL_RenderClear(app.renderer);
 }
 
+void prepareSceneWithCamera(Application& app) {
+    SDL_SetRenderTarget(app.renderer, app.renderTarget);  // ← All rendering now goes to texture
+    SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255);
+    SDL_RenderClear(app.renderer);
+}
+
+
 /**
  * @name` presentScene
  * @brief Presents the rendered scene to the screen
  * @param app Application struct reference
  */
 void presentScene(Application & app){
+    SDL_RenderPresent(app.renderer);
+}
+
+void presentSceneWithCamera(Application& app, float rotation, SDL_Point* center) {
+    SDL_SetRenderTarget(app.renderer, nullptr);  // ← Switch back to rendering to screen
+
+    // Now render the texture (which contains everything) to the screen with rotation
+
+    SDL_Rect destRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    int result = SDL_RenderCopyEx(
+        app.renderer,
+        app.renderTarget,  // The texture containing all your game graphics
+        nullptr,
+        &destRect,
+        rotation,
+        center,
+        SDL_FLIP_NONE
+    );
+    if (result != 0) {
+        printf("SDL_RenderCopyEx failed: %s\n", SDL_GetError());
+    }
+    
     SDL_RenderPresent(app.renderer);
 }
 

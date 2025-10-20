@@ -56,6 +56,7 @@ bool initSDL(Application &app, const std::string& title){
                         (int) (SCREEN_WIDTH),
                         (int) (SCREEN_HEIGHT),
                         SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
         if (app.window == nullptr){
             throw_sdl_error("Create window failed %s");
             success = false;
@@ -67,6 +68,19 @@ bool initSDL(Application &app, const std::string& title){
             }else{
 
                 SDL_SetRenderDrawColor(app.renderer, 0x00, 0x00, 0x00, 255);
+                app.renderTarget = SDL_CreateTexture(
+                    app.renderer,
+                    SDL_GetWindowPixelFormat(app.window),
+                    SDL_TEXTUREACCESS_TARGET,
+                    SCREEN_WIDTH,
+                    SCREEN_HEIGHT
+                );
+                if (app.renderTarget == nullptr){
+                    throw_sdl_error("Error creating render target %s");
+                    success = false;
+                }else{
+                    SDL_SetTextureBlendMode(app.renderTarget, SDL_BLENDMODE_BLEND);
+                }
                 int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
                 if (!(IMG_Init(imgFlags) & imgFlags)){
                     printf("SDL_image could not initialize, Error: %s", SDL_GetError());
@@ -97,10 +111,15 @@ bool initSDL(Application &app, const std::string& title){
  * @param app - Application struct reference
  */
 void cleanup(Application & app){
+    if (app.renderTarget != nullptr){
+        SDL_DestroyTexture(app.renderTarget);
+        app.renderTarget = nullptr;
+    }
     SDL_DestroyRenderer(app.renderer);
     SDL_DestroyWindow(app.window);
     app.window = nullptr;
     app.renderer = nullptr;
+
     SDL_Quit();
     Mix_Quit();
 }
