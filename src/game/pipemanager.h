@@ -23,7 +23,7 @@ public:
     std::vector<Pipe> pipePool;
 private:
     Game* game;
-    void generatePipePair(float& topY, float& bottomY, float &gap);
+    void generatePipePair(float& topY, float& bottomY, float& midY, float &gap);
     bool containsInactivePipe(bool isTop);
     float randomFloat(float min, float max);
     AtlasImage* pipeTexture = nullptr;

@@ -27,6 +27,8 @@ private:
     void drawBackground();
     void drawIntro();
     void drawBase();
+    void drawMenu();
+    void setupImGuiStyle();
     SDL_Texture* background;
     SDL_Texture* base;
     SDL_Texture* flappyBirdText;

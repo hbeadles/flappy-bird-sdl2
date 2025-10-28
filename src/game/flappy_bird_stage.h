@@ -5,7 +5,8 @@
 #define FLAPPY_BIRD_SDL2_FLAPPY_BIRD_STAGE_H
 #include <game/stage.h>
 #include <system/common.h>
-
+#include <game/flappy_bird_ai.h>
+#include <imgui/imgui.h>
 /**
  * @name FlappyBirdStage
  * @class FlappyBirdStage
@@ -23,6 +24,7 @@ public:
 private:
     void drawBackground();
     void drawBase();
+    void drawAIControls();
     SDL_Texture* background;
     SDL_Texture* base;
     double backgroundX;

@@ -52,9 +52,10 @@ bool initSDL(Application &app, const std::string& title){
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")){
             printf("Warning. Linear Texture filtering not enabled!");
         }
+        float main_scale = ImGui_ImplSDL2_GetContentScaleForDisplay(0);
         app.window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                        (int) (SCREEN_WIDTH),
-                        (int) (SCREEN_HEIGHT),
+                (int) (SCREEN_WIDTH * main_scale),
+                (int) (SCREEN_HEIGHT * main_scale),
                         SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         if (app.window == nullptr){
@@ -67,7 +68,18 @@ bool initSDL(Application &app, const std::string& title){
                 success = false;
             }else{
 
-                SDL_SetRenderDrawColor(app.renderer, 0x00, 0x00, 0x00, 255);
+                IMGUI_CHECKVERSION();
+                ImGui::CreateContext();
+                app.io = &ImGui::GetIO();
+                app.io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+                app.io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+                ImGui::StyleColorsDark();
+                app.style = &ImGui::GetStyle();
+                app.style->ScaleAllSizes(main_scale);
+                app.style->FontScaleDpi = main_scale;
+                ImGui_ImplSDL2_InitForSDLRenderer(app.window, app.renderer);
+                ImGui_ImplSDLRenderer2_Init(app.renderer);
+
                 app.renderTarget = SDL_CreateTexture(
                     app.renderer,
                     SDL_GetWindowPixelFormat(app.window),

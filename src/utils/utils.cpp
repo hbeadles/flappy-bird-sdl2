@@ -3,6 +3,22 @@
 //
 #include <utils/utils.h>
 
+double distance(SDL_Point a, SDL_Point b) {
+    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}
+
+double verticalOffset(SDL_Point a, SDL_Point b) {
+    return a.y - b.y;
+}
+
+double angleBetweenPoints(SDL_Point a, SDL_Point b) {
+    return atan2(b.y - a.y, b.x - a.x);
+}
+
+bool aBelowB(SDL_Point a, SDL_Point b) {
+    return a.y > b.y;
+}
+
 bool collision(Flappy *a, Pipe *b){
     SDL_Rect aRect = {(int)a->x, (int)a->y, a->idleTexture->rect.w, a->idleTexture->rect.h};
     SDL_Rect bRect = {(int)b->x, (int)b->y, b->texture->rect.w, b->texture->rect.h};

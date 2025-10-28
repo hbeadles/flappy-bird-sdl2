@@ -86,10 +86,11 @@ bool PipeManager::containsInactivePipe(bool isTop) {
 //  * @param gap Reference to float to store gap height
 //  * @memberof PipeManager
 //  */
-void PipeManager::generatePipePair(float& topY, float& bottomY, float &gap) {
+void PipeManager::generatePipePair(float& topY, float& bottomY, float& midY, float &gap) {
     float gapY = randomFloat(topGapMax, bottomGapMax);
     topY = gapY - PIPE_HEIGHT;
     bottomY = gapY + gap_height;
+    midY = gapY + gap_height / 2.0f;
     gap = gap_height;
 }
 
@@ -115,28 +116,35 @@ void PipeManager::updatePipes(Flappy* flappy, float deltaTime) {
             auto topPipe = std::find_if(pipePool.begin(), pipePool.end(), [](const Pipe& pipe){
                 return !pipe.active && pipe.isTop;
             });
-            float topY, bottomY, gap;
-            generatePipePair(topY, bottomY, gap);
+            float topY, bottomY, gap, midY;
+            generatePipePair(topY, bottomY, midY, gap);
             bottomPipe->active = true;
             bottomPipe->x = SCREEN_WIDTH;
             bottomPipe->y = bottomY;
+            bottomPipe->midY = midY;
+            bottomPipe->midX = SCREEN_WIDTH + 16;
             bottomPipe->passed = false;  // Reset passed flag
             topPipe->active = true;
             topPipe->x = SCREEN_WIDTH;
             topPipe->y = topY;
+            topPipe->midY = midY;
+            topPipe->midX = SCREEN_WIDTH + 16;
             topPipe->passed = false;  // Reset passed flag
         }
     }
+    int offsetX = (SCREEN_WIDTH - BACKGROUND_WIDTH) / 2;
     for (auto& pipe: pipePool){
         if (pipe.active){
             if (!pipe.isTop && !pipe.passed && flappy->active){
-                if (flappy->x > pipe.x + pipeTexture->rect.w){
+                if (flappy->x > (pipe.x + pipeTexture->rect.w)){
                     pipe.passed = true;
                     game->score++;
                 }
             }
             pipe.x -= (PIPE_SCROLL_SPEED * deltaTime * 60);
-            if (pipe.x + pipeTexture->rect.w < 0){
+            pipe.midX -= (PIPE_SCROLL_SPEED * deltaTime * 60);
+
+            if (pipe.x + pipeTexture->rect.w < -offsetX){
                 pipe.active = false;
                 // Note: Don't reset passed flag here, let it reset on spawn
             }
@@ -154,6 +162,12 @@ void PipeManager::drawPipes() {
     for (auto& pipe: pipePool) {
         if (pipe.active) {
             blitAtlasImage(game->app, pipeTexture, pipe.x, pipe.y, 0, 0, pipe.isTop ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE);
+            if (pipe.isTop && game->debug) {
+                //Draw a rectangle on the midPoint
+                SDL_Rect debugRect = {(int)pipe.midX - 4, (int)pipe.midY - 4, 8, 8};
+                SDL_SetRenderDrawColor(game->app.renderer, 255, 0, 0, 255);
+                SDL_RenderDrawRect(game->app.renderer, &debugRect);
+            }
         }
     }
 }

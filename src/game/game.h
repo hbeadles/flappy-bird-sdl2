@@ -7,7 +7,7 @@
 #include <system/common.h>
 #include <draw/text.h>
 #include <game/pipemanager.h>
-
+#include <game/flappy_bird_ai.h>
 // Forward declaration to avoid circular dependency
 class Stage;
 /**
@@ -40,12 +40,14 @@ public:
     bool spaceWasPressed = false;
     bool returnWasPressed = false;
     Text textWriter;
-
+    bool debug=true;
+    bool use_flappy_ai = false;
     float cameraRotation = 0.0f;
-    SDL_Point cameraCenter = {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2};
+    SDL_Point cameraCenter = {(int)BACKGROUND_WIDTH / 2, (int)BACKGROUND_HEIGHT / 2};
 private:
     std::unordered_map<StageType, std::unique_ptr<Stage>> stages;
     Stage* currentStage = nullptr;
+    FlappyAI* flappyAI{};
     SDL_Window* mWindow{};
     SDL_Renderer* mRenderer{};
     Uint32 mTicksCount;

@@ -9,6 +9,9 @@
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
 #include <system/defs.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 #include <string>
 #include <cstdio>
 #include <cmath>

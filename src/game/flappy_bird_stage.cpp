@@ -77,9 +77,63 @@ StageType FlappyBirdStage::update(float deltaTime) {
             return StageType::GAME_OVER;
         }
     }
-
+   // flappyAI->update(game->flappy.get(), game->pipe_manager.get(), deltaTime);
     return StageType::NONE;
 }
+
+/**
+ * @name drawAIControls
+ * @brief Draws AI control UI (stop button) in bottom right corner
+ * @memberof FlappyBirdStage
+ */
+void FlappyBirdStage::drawAIControls() {
+    if (!game->use_flappy_ai) {
+        return;
+    }
+
+    // Style the stop button
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 12.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(16, 10)); // Add padding for the button
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove window padding
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));        // Red
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.3f, 0.3f, 1.0f)); // Lighter red on hover
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.7f, 0.1f, 0.1f, 1.0f));  // Darker red when pressed
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));         // White text
+
+    // Position in bottom right
+    ImVec2 buttonSize(100, 40);  // Increased size to fit text
+    float padding = 10.0f;
+    int offsetX = (game->app.screenWidth - BACKGROUND_WIDTH) / 2;
+    int offsetY = (game->app.screenHeight - BACKGROUND_HEIGHT) / 2;
+
+    ImVec2 windowPos((offsetX + SCREEN_WIDTH - buttonSize.x - padding), (offsetY + SCREEN_HEIGHT - buttonSize.y - padding));
+
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(buttonSize.x + 20, buttonSize.y + 20), ImGuiCond_Always);
+
+    ImGui::Begin("AIControls", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoBackground);
+
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - buttonSize.x) * 0.5f);
+
+    if (ImGui::Button("Stop AI", buttonSize)) {
+        printf("Stopping AI...\n");
+        game->flappy->active = false;
+        // Optionally return to menu or switch to player control
+        // transitionToStage(StageType::GAME_INTRO);
+    }
+
+    ImGui::End();
+
+    ImGui::PopStyleColor(4);
+    ImGui::PopStyleVar(3);
+}
+
 
 /**
  * @name draw
@@ -93,8 +147,9 @@ void FlappyBirdStage::draw() {
         game->pipe_manager->drawPipes();
     }
     drawBase();
-    game->textWriter.drawScore(game->score, (SCREEN_WIDTH / 2) - 24, 50);
-
+    int offsetY = BACKGROUND_HEIGHT - SCREEN_HEIGHT ;
+    game->textWriter.drawScore(game->score, (SCREEN_WIDTH / 2) - 24, offsetY);
+    drawAIControls();
 }
 
 /**
@@ -141,6 +196,7 @@ void FlappyBirdStage::drawBase() {
         };
         blitEx(game->app, base, &srcRect, &dstRect, 0.0, &center, SDL_FLIP_NONE);
     }
+
 }
 
 void FlappyBirdStage::handleInput(const Uint8* state) {

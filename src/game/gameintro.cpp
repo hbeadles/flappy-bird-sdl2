@@ -36,7 +36,7 @@ void GameIntroStage::init() {
     base = loadTexture(game->app, "gfx/base_dark_large.png");
     flappyBirdText = loadTextTexture(game->app, "Flappy Bird",
         {255, 191, 0}, game->textWriter.getFont());
-    gameStartText = loadTextTexture(game->app, "Game Start",
+    gameStartText = loadTextTexture(game->app, "Play the Game",
         {205, 127, 50}, game->textWriter.getFont());
 
     SDL_QueryTexture(flappyBirdText, NULL, NULL, &flappyBirdTextWidth, &flappyBirdTextHeight);
@@ -44,6 +44,61 @@ void GameIntroStage::init() {
     backgroundY = 0;
     backgroundX = 0;
     baseX = 0;
+    setupImGuiStyle();
+}
+
+void GameIntroStage::setupImGuiStyle() {
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    // Make buttons rounded
+    style.FrameRounding = 12.0f;
+    style.FramePadding = ImVec2(20, 12);
+
+    // Tan color scheme
+    style.Colors[ImGuiCol_Button] = ImVec4(0.82f, 0.71f, 0.55f, 0.5f);        // Tan
+    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.90f, 0.80f, 0.65f, 1.0f); // Lighter tan on hover
+    style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.72f, 0.61f, 0.45f, 0.8f);  // Darker tan when pressed
+    style.Colors[ImGuiCol_Text] = ImVec4(0.2f, 0.15f, 0.1f, 1.0f);           // Dark brown text
+}
+
+void GameIntroStage::drawMenu() {
+    // Calculate menu position (centered and fixed)
+    float menuY = backgroundY + flappyBirdTextHeight + 50;
+    ImVec2 menuPos(SCREEN_WIDTH / 2 - (flappyBirdTextWidth / 2) , menuY);
+    ImVec2 buttonSize(220, 50);
+
+    // Create a window without decorations at fixed position
+    ImGui::SetNextWindowPos(menuPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(300, 150), ImGuiCond_Always);
+
+    ImGui::Begin("GameMenu", nullptr,
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoBackground);
+
+    // Center the buttons
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - buttonSize.x) * 0.5f);
+
+    if (ImGui::Button("Have the AI Play", buttonSize)) {
+        printf("AI Plays selected!\n");
+        game->use_flappy_ai = true;
+        start = true;
+        //aiPlaysSelected = true;
+    }
+
+    ImGui::Spacing();
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - buttonSize.x) * 0.5f);
+
+    if (ImGui::Button("Let me try!", buttonSize)) {
+        printf("Player mode selected!\n");
+        game->use_flappy_ai = false;
+        start = true;
+        //playerPlaysSelected = true;
+    }
+
+    ImGui::End();
 }
 
 /**
@@ -72,10 +127,10 @@ void GameIntroStage::handleInput(const Uint8* state) {
     bool spacePressed = state[SDL_SCANCODE_SPACE] && !game->spaceWasPressed;
     bool returnPressed = state[SDL_SCANCODE_RETURN] && !game->returnWasPressed;
 
-    if (spacePressed || returnPressed) {
-        printf("Starting game...\n");
-        start = true;
-    }
+    // if (spacePressed || returnPressed) {
+    //     printf("Starting game...\n");
+    //     start = true;
+    // }
 }
 
 /**
@@ -87,8 +142,8 @@ void GameIntroStage::handleInput(const Uint8* state) {
  */
 StageType GameIntroStage::update(float deltaTime) {
     backgroundY += deltaTime * 50;
-    if (backgroundY >= (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 2.5)) {
-        backgroundY = (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 2.5);
+    if (backgroundY >= (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 3.5)) {
+        backgroundY = (SCREEN_HEIGHT / 2 - flappyBirdTextHeight * 3.5);
     }
     if (start) {
         return StageType::GAMEPLAY;
@@ -106,6 +161,7 @@ void GameIntroStage::draw() {
     drawBackground();
     drawBase();
     drawIntro();
+    drawMenu();
 }
 
 /**

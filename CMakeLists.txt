@@ -15,6 +15,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
         src/game/*.cpp
         src/utils/*.h
         src/utils/*.cpp
+        src/imgui/*.h
+        src/imgui/*.cpp
         src/tests/*.cpp
         src/tests/*.h
         src/*.hpp
@@ -33,6 +35,7 @@ target_include_directories(
         ${PROJECT_SOURCE_DIR}/src/system
         ${PROJECT_SOURCE_DIR}/src/draw
         ${PROJECT_SOURCE_DIR}/src/game
+        ${PROJECT_SOURCE_DIR}/src/imgui
         ${PROJECT_SOURCE_DIR}/src/utils
         ${PROJECT_SOURCE_DIR}/src/tests
 )
@@ -143,6 +146,7 @@ target_include_directories (
         ${PROJECT_SOURCE_DIR}/src/system
         ${PROJECT_SOURCE_DIR}/src/draw
         ${PROJECT_SOURCE_DIR}/src/game
+        ${PROJECT_SOURCE_DIR}/src/imgui
         ${PROJECT_SOURCE_DIR}/src/utils
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_MIXER_INCLUDE_DIRS}

@@ -10,6 +10,13 @@
 #include <utils/utils.h>
 #include <game/gameover.h>
 #include <game/gameintro.h>
+#include <game/flappy_bird_ai.h>
+/**
+ * TODO
+ * 1. Migrate Flappy to its own class
+ * 2. Display a spline from Flappy through the midpoints of the pipes
+ **/
+
 
 /**
  * @name Game
@@ -41,6 +48,7 @@ Game::~Game() {
 bool Game::initialize(const std::string& title) {
     bool init = initSDL(app, title);
     initAtlas(app);
+    flappyAI = new FlappyAI(this);
     textWriter.initText();
     stages[StageType::GAME_INTRO] = std::make_unique<GameIntroStage>(this);
     stages[StageType::GAMEPLAY] = std::make_unique<FlappyBirdStage>(this);
@@ -163,9 +171,11 @@ void Game::updateFlappy(float deltaTime) {
         flappy->health--;
         flappy->y = SCREEN_HEIGHT - BASE_HEIGHT - flappy->idleTexture->rect.h;
     }
-    if (flappy->x < 0.0f) {
+    int offsetX = (SCREEN_WIDTH - BACKGROUND_WIDTH) / 2;
+
+    if (flappy->x < -offsetX) {
         flappy->health--;
-        flappy->x = 0.0f;
+        flappy->x = -offsetX;
     }
     if (flappy->x > SCREEN_WIDTH) {
         flappy->health--;
@@ -268,6 +278,7 @@ void Game::processInput() {
 
     SDL_Event event;
     while(SDL_PollEvent(&event)){
+        ImGui_ImplSDL2_ProcessEvent(&event);
 
         switch(event.type){
             case SDL_QUIT:
@@ -322,6 +333,9 @@ void Game::updateGame() {
         deltaTime = 0.05f;
     }
     mTicksCount = SDL_GetTicks();
+    ImGui_ImplSDLRenderer2_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
 
     if (currentStage) {
         StageType nextStage = currentStage->update(deltaTime);
@@ -330,7 +344,11 @@ void Game::updateGame() {
         }
     }
     if (flappy != nullptr) {
-        updateFlappy(deltaTime);
+        if (use_flappy_ai) {
+            flappyAI->update(flappy.get(), pipe_manager.get(), deltaTime);
+        }else {
+            updateFlappy(deltaTime);
+        }
     }
 };
 
@@ -342,12 +360,20 @@ void Game::updateGame() {
 void Game::generateOutput(){
     //prepareScene(app);
     prepareSceneWithCamera(app);
+    SDL_RenderSetScale(app.renderer, app.io->DisplayFramebufferScale.x, app.io->DisplayFramebufferScale.y);
     if (currentStage) {
         currentStage->draw();
     }
     if (flappy != nullptr) {
-        renderFlappy();
+        if (use_flappy_ai) {
+            flappyAI->draw(flappy.get());
+        }else {
+            renderFlappy();
+        }
     }
+    ImGui::Render();
+
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), app.renderer);
     presentSceneWithCamera(app, cameraRotation, &cameraCenter);
 }
 
